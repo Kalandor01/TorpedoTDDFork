@@ -1,5 +1,6 @@
-package main;
+package modell;
 
+import modell.Hajo;
 import java.util.Scanner;
 
 public class Palya {

@@ -1,4 +1,4 @@
-package main;
+package modell;
 
 public class Hajo {
     private int[] pozicio;

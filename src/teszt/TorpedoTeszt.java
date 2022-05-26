@@ -1,4 +1,6 @@
-package main;
+package teszt;
+
+import modell.Hajo;
 
 public class TorpedoTeszt {
     public static void main(String[] args) {
