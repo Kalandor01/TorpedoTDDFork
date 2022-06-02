@@ -1,48 +1,55 @@
 package modell;
 
 public class Hajo {
-    private boolean elsulyedt;
-    private int talalat;
-    private int[] pozicio;
+    
+    public static final String TALALT = "talált";
+    public static final String SULLYEDT = "süllyedt";
+    public static final String MELLE = "mellé";
+    
+    private int[] poziciok;
+    int talalatSzama;
+    boolean elsullyedt;
 
     public Hajo(int[] pozicio) {
-        this.pozicio = pozicio;
-        this.talalat = 0;
-        this.elsulyedt = false;
+        elsullyedt = false;
+        talalatSzama =0;
+        this.poziciok = pozicio;
     }
     
-    public String talalat(int poz){
+    public String talalatEllenorzes(int poz){
         //eldöntés tétele
-        String resp;
-        if(!elsulyedt)
-        {
-            int i = 0;
-            while(i < pozicio.length && !(pozicio[i] == poz)){
-                i++;
-            }
-            if(i<pozicio.length)
-            {
-                talalat++;
-                resp = "talált";
-                if(talalat>=pozicio.length)
-                {
-                    elsulyedt = true;
-                    resp = "sülyedt";
-                }
-            }
-            else
-                resp = "mellé";
+        int i = 0;
+        while(i < poziciok.length && !(poziciok[i] == poz)){
+            i++;
         }
-        else
-            resp = "sülyedt";
-        return resp;
+        boolean talalt = i < poziciok.length;
+        
+        String lovesEredmenye;
+        if(talalt){
+            talalatSzama++;
+            lovesEredmenye = TALALT;
+            if(talalatSzama == poziciok.length){
+                lovesEredmenye = SULLYEDT;
+                elsullyedt = true;
+            }
+        }else{
+            lovesEredmenye = MELLE;
+        }
+        
+        return lovesEredmenye;
     }
     
     public int[] getPozicio(){
-        return pozicio;
+        return poziciok;
+    }
+
+    public boolean isElsullyedt() {
+        return elsullyedt;
+    }
+
+    public int getTalalatSzama() {
+        return talalatSzama;
     }
     
-    public boolean isElsulyedt(){
-        return elsulyedt;
-    }
+    
 }

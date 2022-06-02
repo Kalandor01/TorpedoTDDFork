@@ -1,57 +1,77 @@
 package modell;
 
-import modell.Hajo;
-import java.util.Scanner;
-
 public class Palya {
 
-    private static Scanner sc = new Scanner(System.in);
+    public static final int PALYA_HOSSZ = 7;
+    public static final char HAJO_JEL = 'O';
+    public static final char TALALT_JEL = 'X';
+    public static final char MELLE_JEL = '~';
+   
+    private static int lovesekSzama;
     
     private Hajo hajo;
+    private char[] palya;
+    private boolean vanMegHajo;
     
     public Palya() {
-        jatekIndito();
-    }
-
-    public void jatekIndito() {
-        System.out.println("Torpedó játék");
-        
-        hajo = ujPoz();
-        
-        int talaltSzam = 0, lovesSzam = 0;
-        boolean sullyedt;
-        do {
-            System.out.print("hova lősz: "); 
-            int poz = sc.nextInt();
-            if(talalt(poz)){
-                talaltSzam++;
-                System.out.println("talált!");
-            }else{
-                System.out.println("mellé");
-            }
-            lovesSzam++;
-            sullyedt = talaltSzam == 3;
-        } while (!sullyedt);
-        System.out.println("Süllyedt!");
-        System.out.printf("Eredmény: %d lövésből!", lovesSzam);
-    }
-
-    private Hajo ujPoz() {
-        int kezd = (int)(Math.random() * 5);
-        int poz[] = new int[3];
-        for (int i = 0; i < 3; i++) {
-            poz[i] = kezd + i;
-        }
-        
-        return new Hajo(poz);
+        palyaReset();
     }
     
-    private boolean talalt(int poz){
-        int i = 0;
-        while(i < 3 && !(hajo.getPozicio()[i] == poz)){
-            i++;
+    private void palyaReset(){
+        vanMegHajo = true;
+        lovesekSzama = 0;
+        palya = new char[PALYA_HOSSZ];
+        for (int i = 0; i < PALYA_HOSSZ; i++) {
+            palya[i] = '_'; 
         }
-        return i < 3;
+    }
+    
+    //hajotElhelyez()
+    public void ujPoz() {
+        int hajoHossz = 3;
+        int kezd = (int)(Math.random() * (PALYA_HOSSZ - hajoHossz + 1));
+        ujPoz(kezd, hajoHossz);
+    }
+
+    public void ujPoz(int kezd, int hajoHossz){
+        //bejövő paraméterek ellenőrzése!!!!
+        int poz[] = new int[hajoHossz];
+        for (int i = 0; i < hajoHossz; i++) {
+            int h = kezd + i;
+            poz[i] = h;
+            palya[h] = HAJO_JEL;
+        }
+        
+        hajo = new Hajo(poz);
+    }
+
+    //jatekosLovesBeker()
+    public void setPalya(int tipp){
+        lovesekSzama++;
+        if(hajo.talalatEllenorzes(tipp).equals(Hajo.TALALT)){
+            palya[tipp] = Palya.TALALT_JEL;
+            if(hajo.isElsullyedt()){
+                vanMegHajo = false;
+            }
+        }else{
+            palya[tipp] = Palya.MELLE_JEL;
+        }
+    }
+    
+    public char[] getPalya() {
+        return palya;
+    }
+
+    public static int getLovesekSzama() {
+        return lovesekSzama;
+    }
+
+    public boolean isVanMegHajo() {
+        return vanMegHajo;
+    }
+
+    public Hajo getHajo() {
+        return hajo;
     }
     
 }
